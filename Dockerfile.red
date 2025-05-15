@@ -1,0 +1,22 @@
+ARG ALPINE_VERSION=3.21
+FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.23.4-alpine${ALPINE_VERSION} AS builder
+WORKDIR /go/src/app
+COPY . .
+RUN make
+
+FROM scratch
+COPY *.html ./
+COPY *.png ./
+COPY *.js ./
+COPY *.ico ./
+COPY *.css ./
+COPY --from=builder /go/src/app/rollouts-demo /rollouts-demo
+
+ARG COLOR
+ENV COLOR=red
+ARG ERROR_RATE
+ENV ERROR_RATE=${ERROR_RATE}
+ARG LATENCY
+ENV LATENCY=${LATENCY}
+
+ENTRYPOINT [ "/rollouts-demo" ]
