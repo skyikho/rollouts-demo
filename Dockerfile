@@ -1,4 +1,7 @@
-FROM golang:1.16 as build
+ARG ALPINE_VERSION=3.21
+#FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.23.4-alpine${ALPINE_VERSION} AS builder
+#FROM golang:1.16
+FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.24.3 as builder
 WORKDIR /go/src/app
 COPY . .
 RUN make
@@ -9,10 +12,10 @@ COPY *.png ./
 COPY *.js ./
 COPY *.ico ./
 COPY *.css ./
-COPY --from=build /go/src/app/rollouts-demo /rollouts-demo
+COPY --from=builder /go/src/app/rollouts-demo /rollouts-demo
 
 ARG COLOR
-ENV COLOR=${COLOR}
+ENV COLOR=blue
 ARG ERROR_RATE
 ENV ERROR_RATE=${ERROR_RATE}
 ARG LATENCY
