@@ -1,7 +1,7 @@
 ARG ALPINE_VERSION=3.21
 #FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.23.4-alpine${ALPINE_VERSION} AS builder
 #FROM golang:1.16
-FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.24.3
+FROM ccpr.cocktailcloud.io/docker.io/library/golang:1.24.3 as builder
 WORKDIR /go/src/app
 COPY . .
 RUN make
